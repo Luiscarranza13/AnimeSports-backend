@@ -1,0 +1,299 @@
+### Variables
+@baseUrl = http://localhost:8000/api
+@token = YOUR_TOKEN_HERE
+
+### ============================================
+### AUTENTICACIÓN
+### ============================================
+
+### Registrar usuario
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "password123",
+  "password_confirmation": "password123"
+}
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@anime-platform.com",
+  "password": "password"
+}
+
+### Obtener usuario actual
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{token}}
+
+### ============================================
+### ANIMES
+### ============================================
+
+### Listar todos los animes
+GET {{baseUrl}}/animes
+
+### Listar animes con filtros
+GET {{baseUrl}}/animes?status=ongoing&genre=1&min_rating=8&sort_by=rating&per_page=10
+
+### Animes destacados
+GET {{baseUrl}}/animes/featured
+
+### Animes en tendencia
+GET {{baseUrl}}/animes/trending
+
+### Búsqueda avanzada
+GET {{baseUrl}}/animes/search?q=attack&genres=1,5&year_from=2010&rating_from=8&sort_by=rating
+
+### Detalle de anime
+GET {{baseUrl}}/animes/1
+
+### Crear anime (Admin)
+POST {{baseUrl}}/animes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Nuevo Anime 2024",
+  "synopsis": "Esta es una sinopsis de prueba que debe tener al menos 50 caracteres para pasar la validación del sistema.",
+  "poster_image": "https://example.com/poster.jpg",
+  "banner_image": "https://example.com/banner.jpg",
+  "trailer_url": "https://youtube.com/watch?v=example",
+  "studio": "Studio Test",
+  "year": 2024,
+  "status": "upcoming",
+  "episodes_count": 12,
+  "duration_minutes": 24,
+  "is_featured": true,
+  "genres": [1, 2, 5]
+}
+
+### Actualizar anime (Admin)
+PUT {{baseUrl}}/animes/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Attack on Titan - Updated",
+  "is_featured": true,
+  "status": "completed"
+}
+
+### Eliminar anime (Admin)
+DELETE {{baseUrl}}/animes/1
+Authorization: Bearer {{token}}
+
+### ============================================
+### GÉNEROS
+### ============================================
+
+### Listar géneros
+GET {{baseUrl}}/genres
+
+### Detalle de género
+GET {{baseUrl}}/genres/1
+
+### Crear género (Admin)
+POST {{baseUrl}}/genres
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Nuevo Género",
+  "description": "Descripción del género",
+  "color": "#ff6b6b"
+}
+
+### Actualizar género (Admin)
+PUT {{baseUrl}}/genres/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Acción Actualizado",
+  "color": "#ff0000"
+}
+
+### Eliminar género (Admin)
+DELETE {{baseUrl}}/genres/1
+Authorization: Bearer {{token}}
+
+### ============================================
+### EPISODIOS
+### ============================================
+
+### Listar episodios de un anime
+GET {{baseUrl}}/animes/1/episodes
+
+### Listar episodios sin fillers
+GET {{baseUrl}}/animes/1/episodes?exclude_filler=true
+
+### Detalle de episodio
+GET {{baseUrl}}/episodes/1
+
+### Crear episodio (Admin)
+POST {{baseUrl}}/animes/1/episodes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "episode_number": 1,
+  "title": "Primer Episodio",
+  "description": "Descripción del episodio",
+  "thumbnail": "https://example.com/ep1-thumb.jpg",
+  "video_url": "https://example.com/video.mp4",
+  "duration_minutes": 24,
+  "air_date": "2024-01-01",
+  "is_filler": false
+}
+
+### Actualizar episodio (Admin)
+PUT {{baseUrl}}/episodes/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Episodio 1 - Actualizado",
+  "is_filler": true
+}
+
+### Eliminar episodio (Admin)
+DELETE {{baseUrl}}/episodes/1
+Authorization: Bearer {{token}}
+
+### ============================================
+### NOTICIAS
+### ============================================
+
+### Listar noticias
+GET {{baseUrl}}/news
+
+### Noticias destacadas
+GET {{baseUrl}}/news?featured=true
+
+### Noticias por tag
+GET {{baseUrl}}/news?tag=attack-on-titan
+
+### Detalle de noticia
+GET {{baseUrl}}/news/1
+
+### Crear noticia (Admin)
+POST {{baseUrl}}/news
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Nueva temporada confirmada",
+  "excerpt": "Resumen de la noticia",
+  "content": "Contenido completo de la noticia...",
+  "thumbnail": "https://example.com/news-thumb.jpg",
+  "banner_image": "https://example.com/news-banner.jpg",
+  "is_published": true,
+  "is_featured": true,
+  "tags": ["anime", "temporada", "confirmado"],
+  "published_at": "2024-01-01T00:00:00Z"
+}
+
+### Actualizar noticia (Admin)
+PUT {{baseUrl}}/news/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Título actualizado",
+  "is_featured": false
+}
+
+### Eliminar noticia (Admin)
+DELETE {{baseUrl}}/news/1
+Authorization: Bearer {{token}}
+
+### ============================================
+### FAVORITOS
+### ============================================
+
+### Mis favoritos
+GET {{baseUrl}}/user/favorites
+Authorization: Bearer {{token}}
+
+### Agregar a favoritos
+POST {{baseUrl}}/user/favorites
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "anime_id": 1
+}
+
+### Verificar si es favorito
+GET {{baseUrl}}/user/favorites/1/check
+Authorization: Bearer {{token}}
+
+### Quitar de favoritos
+DELETE {{baseUrl}}/user/favorites/1
+Authorization: Bearer {{token}}
+
+### ============================================
+### CALIFICACIONES
+### ============================================
+
+### Listar calificaciones de un anime
+GET {{baseUrl}}/animes/1/ratings
+
+### Mi calificación de un anime
+GET {{baseUrl}}/animes/1/ratings/me
+Authorization: Bearer {{token}}
+
+### Calificar anime
+POST {{baseUrl}}/animes/1/ratings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "score": 9.5,
+  "review": "Excelente anime, muy recomendado. La animación es increíble y la historia te atrapa desde el primer episodio."
+}
+
+### Actualizar calificación
+POST {{baseUrl}}/animes/1/ratings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "score": 10.0,
+  "review": "Obra maestra del anime!"
+}
+
+### Eliminar calificación
+DELETE {{baseUrl}}/animes/1/ratings
+Authorization: Bearer {{token}}
+
+### ============================================
+### ESTADÍSTICAS
+### ============================================
+
+### Estadísticas generales
+GET {{baseUrl}}/stats
+
+### Estadísticas por año
+GET {{baseUrl}}/stats/by-year
+
+### Estadísticas por género
+GET {{baseUrl}}/stats/by-genre
+
+### Estadísticas por estado
+GET {{baseUrl}}/stats/by-status
+
+### Top animes mejor calificados
+GET {{baseUrl}}/stats/top-rated
+
+### Animes más populares
+GET {{baseUrl}}/stats/most-popular
